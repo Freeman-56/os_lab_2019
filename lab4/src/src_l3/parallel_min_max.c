@@ -193,6 +193,7 @@ int main(int argc, char** argv) {
 
     printf("All child processes finished\n");
 
+    free(active_pids);
     if (terminated > 0) {
         printf("Timeout triggered. Terminate\n");
         free(array);
