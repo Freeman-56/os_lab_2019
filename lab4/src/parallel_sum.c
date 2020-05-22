@@ -17,15 +17,11 @@ struct SumArgs {
 };
 
 int Sum(const struct SumArgs *args) {
-//   int sum = 0;
-//   for(int* i = args->array + args->begin; i < args->array + args->end; i++)
-//     sum += *i;
-//   return sum;
 int sum = 0;
   int i = (*args).begin;
 
-  while(i <= (*args).end){
-      sum += (*args).array[i];
+  while(i <= args->end){
+      sum += args->array[i];
       i++;
   }
   return sum;
@@ -86,28 +82,25 @@ int main(int argc, char **argv) {
 
   pthread_t threads[threads_num];
 
-  /*
-   * TODO:
-   * your code here
-   * Generate array here
-   */
-
   int *array = malloc(sizeof(int) * array_size);
   GenerateArray(array, array_size, seed);
-//   int block = array_size / threads_num; //5
-//   int mod = array_size % threads_num; //0
     int part_size = array_size / threads_num;
     
     
-
   struct timeval begin_time;
   gettimeofday(&begin_time, NULL);
   
+  for(int i = 0; i < array_size; i++){
+      printf("%d ", array[i]);
+  }
+  printf("\n");
+//   printf("threads_num: %d \n", threads_num);
   struct SumArgs args[threads_num];
   for (uint32_t i = 0; i < threads_num; i++) {
      args[i].array = array;
-     args[i].begin = (i == 0) ? i*part_size : i*part_size + 1;
-     args[i].end = (i == threads_num - 1) ? array_size : (i + 1)*part_size;
+     args[i].begin = (i == 0) ? i*part_size : i*part_size;
+     args[i].end = (i == threads_num - 1) ? array_size - 1 : (i)*part_size + 1;
+     printf("thread %d: begin: %d, end: %d \n", i, args[i].begin, args[i].end);
 
     if (pthread_create(&threads[i], NULL, ThreadSum, (void *)&args)) {
       printf("Error: pthread_create failed!\n");
