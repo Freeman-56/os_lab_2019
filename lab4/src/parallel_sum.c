@@ -7,25 +7,26 @@
 
 #include <pthread.h>
 #include "./src_l3/utils.h"
+#include "sum.h"
 
 void GenerateArray(int *array, unsigned int array_size, unsigned int seed);
 
-struct SumArgs {
-  int *array;
-  int begin;
-  int end;
-};
+// struct SumArgs {
+//   int *array;
+//   int begin;
+//   int end;
+// };
 
-int Sum(const struct SumArgs *args) {
-int sum = 0;
-  int i = args->begin;
+// int Sum(const struct SumArgs *args) {
+// int sum = 0;
+//   int i = args->begin;
 
-  while(i <= args->end){
-      sum += args->array[i];
-      i++;
-  }
-  return sum;
-}
+//   while(i <= args->end){
+//       sum += args->array[i];
+//       i++;
+//   }
+//   return sum;
+// }
 
 void *ThreadSum(void *args) {
   struct SumArgs *sum_args = (struct SumArgs *)args;

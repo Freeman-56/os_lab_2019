@@ -6,7 +6,7 @@ THRD=-pthread
 all : task1 task3 task5
 
 task5 : utils.o 
-	$(CC) $(OPT) $(THRD) -o task5 utils.o parallel_sum.c $(CFLAGS)
+	$(CC) $(OPT) $(THRD) -o task5 utils.o parallel_sum.c -L. -lsum $(CFLAGS)
 
 task3 : 
 	$(CC) process_memory.c -o task3
