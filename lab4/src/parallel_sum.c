@@ -18,7 +18,7 @@ struct SumArgs {
 
 int Sum(const struct SumArgs *args) {
 int sum = 0;
-  int i = (*args).begin;
+  int i = args->begin;
 
   while(i <= args->end){
       sum += args->array[i];
@@ -90,19 +90,16 @@ int main(int argc, char **argv) {
   struct timeval begin_time;
   gettimeofday(&begin_time, NULL);
   
-  for(int i = 0; i < array_size; i++){
-      printf("%d ", array[i]);
-  }
-  printf("\n");
+
 //   printf("threads_num: %d \n", threads_num);
   struct SumArgs args[threads_num];
   for (uint32_t i = 0; i < threads_num; i++) {
      args[i].array = array;
-     args[i].begin = (i == 0) ? i*part_size : i*part_size;
-     args[i].end = (i == threads_num - 1) ? array_size - 1 : (i)*part_size + 1;
-     printf("thread %d: begin: %d, end: %d \n", i, args[i].begin, args[i].end);
+     args[i].begin = i*part_size;
+     args[i].end = (i == threads_num - 1) ? array_size - 1 : args[i].begin + part_size - 1;
+    //  printf("thread %d: begin: %d, end: %d \n", i, args[i].begin, args[i].end);
 
-    if (pthread_create(&threads[i], NULL, ThreadSum, (void *)&args)) {
+    if (pthread_create(&threads[i], NULL, ThreadSum, (void *)&args[i])) {
       printf("Error: pthread_create failed!\n");
       return 1;
     }
