@@ -5,20 +5,17 @@ debug: clean all
 
 all : server client
 
-server : server.o mult_modulo.h mult_modulo.o
-	$(CC) -o server -lpthread server.o mult_modulo.o
+server : server.o 
+	$(CC) -o server -lpthread server.o -L. -lmult_modulo
 
-client : client.o mult_modulo.h mult_modulo.o
-	$(CC) -o client client.o mult_modulo.o
+client : client.o 
+	$(CC) -o client client.o -L. -lmult_modulo
 
-server.o : mult_modulo.h
-	$(CC) -o server.o -c -std=c99 server.c $(CFLAGS)
+server.o :
+	$(CC) -o server.o -c -std=c99 -L. -lmult_modulo server.c $(CFLAGS)
 
-client.o : mult_modulo.h
-	$(CC) -o client.o -c -std=c99 client.c $(CFLAGS)
-
-mult_modulo.o : mult_modulo.h
-	$(CC) -o mult_modulo.o -c -std=c99 mult_modulo.c $(CFLAGS)
+client.o : 
+	$(CC) -o client.o -c -std=c99 -L. -lmult_modulo client.c $(CFLAGS)
 
 clean : 
-	rm client.o client server.o server mult_modulo.o
+	rm client.o client server.o server 
